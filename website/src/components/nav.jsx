@@ -385,7 +385,8 @@ const Navbar = () => {
               </div>
               
               <div className="space-y-2">
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition-colors">
+                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition-colors"
+                  onClick={() => navigate('/contact')}>
                   Get Quote
                 </button>
                 <button className="w-full border border-red-600 text-red-600 hover:bg-red-50 py-3 rounded-xl font-semibold transition-colors">
