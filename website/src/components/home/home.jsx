@@ -63,32 +63,32 @@ const Home = () => {
   return (
     <div className="bg-gray-50">
       {/* Hero Section */}
-      <section className="relative h-[60vh] sm:h-[70vh] min-h-[400px] flex items-center justify-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white overflow-hidden pt-16">
+      <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-50"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url("/1234.png")`,
           }}
         ></div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             Find Parts For <span className="text-red-500">Your Vehicle</span>
           </h1>
-          <p className="text-lg sm:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto">
+          <p className="text-xl sm:text-2xl mb-8 max-w-3xl mx-auto">
             Over hundreds of brands and tens of thousands of parts
           </p>
 
           {/* Search Form */}
           <div className="max-w-4xl mx-auto mb-8">
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-2xl">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Brand
                   </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900">
+                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
                     <option>Select Brand</option>
                     <option>UD Trucks</option>
                     <option>Hino</option>
@@ -97,10 +97,10 @@ const Home = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Type
                   </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900">
+                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
                     <option>Select Type</option>
                     <option>Engine Parts</option>
                     <option>Brake Parts</option>
@@ -108,26 +108,28 @@ const Home = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Year
                   </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900">
+                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
                     <option>Select Year</option>
                     <option>2023</option>
                     <option>2022</option>
                     <option>2021</option>
                   </select>
                 </div>
-                <div className="sm:col-span-2 lg:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    &nbsp;
-                  </label>
-                  <button className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
-                    Search
+                <div className="sm:col-span-2 lg:col-span-1 flex items-end">
+                  <button className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105">
+                    Search Parts
                   </button>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <ChevronDown size={32} />
           </div>
         </div>
       </section>
@@ -289,8 +291,7 @@ const Home = () => {
                 price: "$420",
                 oldPrice: "$490",
                 discount: "15%",
-                image:
-                  "/turbo.webp",
+                image: "/turbo.webp",
               },
               {
                 name: "Brake Caliper Set",
@@ -298,8 +299,7 @@ const Home = () => {
                 price: "$180",
                 oldPrice: "$210",
                 discount: "12%",
-                image:
-                  "/brake.webp",
+                image: "/brake.webp",
               },
               {
                 name: "Fuel Injection Pump",
@@ -307,8 +307,7 @@ const Home = () => {
                 price: "$350",
                 oldPrice: "$390",
                 discount: "10%",
-                image:
-                  "/pump.webp",
+                image: "/pump.webp",
               },
               {
                 name: "Suspension Kit",
@@ -316,8 +315,7 @@ const Home = () => {
                 price: "$560",
                 oldPrice: "$620",
                 discount: "10%",
-                image:
-                  "/kit.jpg",
+                image: "/kit.jpg",
               },
             ].map((product, index) => (
               <div

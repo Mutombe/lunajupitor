@@ -41,7 +41,7 @@ const Logo = () => (
     <div className="flex-shrink-0">
       <div className="flex items-center">
         <div className="text-2xl font-bold">
-          <span className="text-black">LNJ</span>
+          <span className="text-black">L</span>
         </div>
         <div className="ml-2 grid grid-cols-6 gap-1">
           {["M", "O", "T", "O", "R", "S"].map((letter, idx) => (
