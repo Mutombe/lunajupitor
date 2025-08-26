@@ -1,3 +1,7 @@
+
+
+
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -35,7 +39,7 @@ const Products = () => {
       category: 'engine', 
       brand: 'UD',
       price: 420,
-      image: 'https://images.unsplash.com/photo-1563720223880-4d93eef1f1c2?auto=format&fit=crop&q=80&w=500'
+      image: '/piston.jpg'
     },
     { 
       id: 2, 
@@ -43,7 +47,7 @@ const Products = () => {
       category: 'transmission', 
       brand: 'Hino',
       price: 680,
-      image: 'https://images.unsplash.com/photo-1620883306916-b4f10edf6c50?auto=format&fit=crop&q=80&w=500'
+      image: '/transmission.jpg'
     },
     { 
       id: 3, 
@@ -51,7 +55,7 @@ const Products = () => {
       category: 'body', 
       brand: 'Freightliner',
       price: 320,
-      image: 'https://images.unsplash.com/photo-1603712610494-73f35c393742?auto=format&fit=crop&q=80&w=500'
+      image: '/headlight.webp'
     },
     { 
       id: 4, 
@@ -59,7 +63,7 @@ const Products = () => {
       category: 'engine', 
       brand: 'UD',
       price: 540,
-      image: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&q=80&w=500'
+      image: 'breaks.jpg'
     },
     { 
       id: 5, 
@@ -67,7 +71,7 @@ const Products = () => {
       category: 'interior', 
       brand: 'Hino',
       price: 380,
-      image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=500'
+      image: '/dashboard.webp'
     },
     { 
       id: 6, 
@@ -75,7 +79,7 @@ const Products = () => {
       category: 'engine', 
       brand: 'Freightliner',
       price: 85,
-      image: 'https://images.unsplash.com/photo-1596638787647-904b822cee5f?auto=format&fit=crop&q=80&w=500'
+      image: '/filter.webp'
     },
   ];
 
