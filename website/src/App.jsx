@@ -7,6 +7,7 @@ import Navbar from './components/nav';
 import Footer from './components/footer';
 import Services from './components/services';
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
+import CartPage from './components/cart';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

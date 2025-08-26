@@ -35,7 +35,7 @@ import {
   Car,
   Zap,
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 const Logo = () => (
   <div className="flex items-center">
     <div className="flex-shrink-0">
@@ -66,6 +66,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeCategory, setActiveCategory] = useState('');
 
+  const navigate = useNavigate();
+
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -83,6 +85,9 @@ const Navbar = () => {
   const handleSearchToggle = () => {
     setSearchOpen(!searchOpen);
   };
+  const handleCartToggle = () => {
+    navigate("/cart");
+  }
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -166,7 +171,8 @@ const Navbar = () => {
               <button className="p-2 hover:bg-red-50 rounded-xl transition-colors duration-200">
                 <Heart className="h-5 w-5 text-gray-600 hover:text-red-600" />
               </button>
-              <button className="p-2 hover:bg-red-50 rounded-xl transition-colors duration-200 relative">
+              <button className="p-2 hover:bg-red-50 rounded-xl transition-colors duration-200 relative"
+              onClick={handleCartToggle}>
                 <ShoppingCart className="h-5 w-5 text-gray-600 hover:text-red-600" />
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
                   3

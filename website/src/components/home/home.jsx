@@ -25,9 +25,11 @@ import {
   Instagram,
   Linkedin,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
     hours: 12,
@@ -119,7 +121,9 @@ const Home = () => {
                   </select>
                 </div>
                 <div className="sm:col-span-2 lg:col-span-1 flex items-end">
-                  <button className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105">
+                  <button className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105"
+                    onClick={() => navigate("/products")}
+                  >
                     Search Parts
                   </button>
                 </div>
@@ -211,7 +215,8 @@ const Home = () => {
                       {category.title}
                     </h3>
                   </div>
-                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors w-fit">
+                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors w-fit"
+                    onClick={() => navigate("/products")}>
                     Shop Now
                   </button>
                 </div>
@@ -233,7 +238,8 @@ const Home = () => {
                 Shop by category
               </h2>
             </div>
-            <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors">
+            <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors"
+              onClick={() => navigate("/products")}>
               Shop Now
             </button>
           </div>
@@ -274,10 +280,12 @@ const Home = () => {
               <p className="text-gray-600">Best prices guaranteed</p>
             </div>
             <div className="flex space-x-2">
-              <button className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center">
+              <button className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center"
+                onClick={() => navigate("/products")}>
                 ←
               </button>
-              <button className="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center">
+              <button className="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center"
+                onClick={() => navigate("/products")}>
                 →
               </button>
             </div>
@@ -404,7 +412,8 @@ const Home = () => {
                   <p className="text-xs sm:text-sm">Secs</p>
                 </div>
               </div>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+              onClick={() => navigate("/products")}>
                 Shop Now
               </button>
             </div>
@@ -566,7 +575,8 @@ const Home = () => {
             won't let you down.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+              onClick={() => navigate("/contact")}>
               Request a Quote
             </button>
             <button className="border border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-3 rounded-lg transition-colors flex items-center justify-center">
