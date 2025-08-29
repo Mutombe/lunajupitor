@@ -1,107 +1,28 @@
-import React, { useState } from "react";
-import {
-  ShoppingCart,
-  Plus,
-  Minus,
-  X,
-  Heart,
-  ArrowLeft,
-  Truck,
-  Shield,
-  Clock,
-  Star,
-  CreditCard,
-  Eye,
-  Lock,
-  CheckCircle,
-  AlertCircle,
-  Gift,
-  Percent,
-  Tag,
-  Package,
-} from "lucide-react";
-
-const Logo = () => (
-  <div className="flex items-center">
-    <div className="flex-shrink-0">
-      <div className="flex items-center">
-        <div className="text-2xl font-bold">
-          <span className="text-black">LUNAJ</span>
-        </div>
-        <div className="ml-2 grid grid-cols-6 gap-1">
-          {["M", "O", "T", "O", "R", "S"].map((letter, idx) => (
-            <div
-              key={idx}
-              className="w-6 h-6 bg-red-600 text-white text-xs font-bold flex items-center justify-center rounded"
-            >
-              {letter}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
+import React, { createContext, useContext, useReducer, useState, useEffect } from 'react';
+import { 
+  ShoppingCart, Plus, Minus, X, Heart, ArrowLeft, Truck, Shield, 
+  Clock, Star, CreditCard, Eye, Lock, CheckCircle, AlertCircle, 
+  Gift, Percent, Tag, Package, Search, User, Menu, Phone, Mail,
+  Facebook, Twitter, Instagram, Linkedin, ChevronDown, Wrench, Car, Zap, Filter
+} from 'lucide-react';
+import { useCart } from './cartContext';
+import { toast } from 'sonner';
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Toyota Camry Engine Oil Filter",
-      part: "15208-65F0C",
-      brand: "Toyota OEM",
-      price: 24.99,
-      quantity: 2,
-      inStock: true,
-      warranty: "12 months",
-      rating: 4.8,
-      reviews: 156,
-    },
-    {
-      id: 2,
-      name: "Mercedes Benz Brake Pads Set",
-      part: "A0044206920",
-      brand: "Genuine MB",
-      price: 189.99,
-      quantity: 1,
-      inStock: true,
-      warranty: "24 months",
-      rating: 4.9,
-      reviews: 89,
-    },
-    {
-      id: 3,
-      name: "Ford F-150 Air Filter",
-      part: "FL-820-S",
-      brand: "Motorcraft",
-      price: 32.45,
-      quantity: 1,
-      inStock: false,
-      warranty: "6 months",
-      rating: 4.6,
-      reviews: 203,
-      estimatedDelivery: "3-5 business days",
-    },
-  ]);
-
+  const { items: cartItems, updateQuantity, removeFromCart } = useCart();
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [showPromoInput, setShowPromoInput] = useState(false);
 
-  const updateQuantity = (id, change) => {
-    setCartItems(items =>
-      items.map(item => {
-        if (item.id === id) {
-          const newQuantity = Math.max(0, item.quantity + change);
-          return { ...item, quantity: newQuantity };
-        }
-        return item;
-      }).filter(item => item.quantity > 0)
-    );
+  const handleQuantityChange = (id, change) => {
+    const item = cartItems.find(item => item.id === id);
+    if (item) {
+      updateQuantity(id, item.quantity + change, item.name, change);
+    }
   };
 
-  const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+  const handleRemoveItem = (id, name) => {
+    removeFromCart(id, name);
   };
 
   const applyPromoCode = () => {
@@ -109,9 +30,53 @@ const CartPage = () => {
       setAppliedPromo({ code: "SAVE10", discount: 0.1, description: "10% off entire order" });
       setShowPromoInput(false);
       setPromoCode("");
+      toast.success('Promo code applied!', {
+        description: 'You got 10% off your entire order.',
+        duration: 3000,
+        position: 'top-right',
+      });
     } else {
-      alert("Invalid promo code. Try 'SAVE10' for 10% off!");
+      toast.error('Invalid promo code', {
+        description: "Try 'SAVE10' for 10% off!",
+        duration: 3000,
+        position: 'top-right',
+      });
     }
+  };
+
+  const generateOrderMessage = () => {
+    const orderDetails = cartItems.map(item => 
+      `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`
+    ).join('%0A');
+    
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const promoDiscount = appliedPromo ? subtotal * appliedPromo.discount : 0;
+    const shipping = subtotal > 500 ? 0 : 25.00;
+    const tax = (subtotal - promoDiscount) * 0.08;
+    const total = subtotal - promoDiscount + shipping + tax;
+    
+    return `Hello, I would like to order:%0A%0A${orderDetails}%0A%0ATotal: $${total.toFixed(2)}%0A%0APlease contact me to complete this order.`;
+  };
+
+  const redirectToWhatsApp = () => {
+    const message = generateOrderMessage();
+    window.open(`https://wa.me/263777220420?text=${message}`, '_blank');
+    toast.success('Redirecting to WhatsApp', {
+      description: 'You will be redirected to WhatsApp to complete your order.',
+      duration: 3000,
+      position: 'top-right',
+    });
+  };
+
+  const redirectToEmail = () => {
+    const message = generateOrderMessage().replace(/%0A/g, '\n');
+    const subject = 'Order Inquiry - LunaJ Motors';
+    window.location.href = `mailto:tinoembara@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    toast.success('Opening email client', {
+      description: 'You will be redirected to your email to complete your order.',
+      duration: 3000,
+      position: 'top-right',
+    });
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -124,15 +89,14 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <button className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => window.history.back()}>
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <Logo />
             </div>
             <div className="flex items-center space-x-2">
               <div className="hidden md:flex items-center space-x-6 text-sm">
@@ -151,14 +115,12 @@ const CartPage = () => {
       </div>
 
       <div className="container mx-auto px-4 py-6 md:py-8">
-        {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
           <span>Home</span>
           <span>/</span>
           <span className="text-red-600 font-medium">Shopping Cart</span>
         </div>
 
-        {/* Page Title */}
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
             <ShoppingCart className="h-6 w-6 md:h-8 md:w-8 text-red-600" />
@@ -172,7 +134,6 @@ const CartPage = () => {
         </div>
 
         {isEmpty ? (
-          /* Empty Cart State */
           <div className="text-center py-12 md:py-20">
             <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
               <ShoppingCart className="h-12 w-12 text-gray-400" />
@@ -184,25 +145,23 @@ const CartPage = () => {
               Looks like you haven't added any truck parts to your cart yet. 
               Start shopping to find the perfect parts for your vehicle.
             </p>
-            <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors duration-200">
+            <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors duration-200"
+              onClick={() => window.location.href = '/products'}>
               Continue Shopping
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-            {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item) => (
                 <div key={item.id} className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
                   <div className="flex flex-col sm:flex-row gap-4">
-                    {/* Product Image */}
                     <div className="flex-shrink-0">
                       <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
-                        <Package className="h-8 w-8 md:h-10 md:w-10 text-gray-400" />
+                        <img src={item.image} alt={item.name} className="max-w-full max-h-full" />
                       </div>
                     </div>
 
-                    {/* Product Details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1">
@@ -240,14 +199,13 @@ const CartPage = () => {
                           </div>
                         </div>
                         <button 
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => handleRemoveItem(item.id, item.name)}
                           className="p-1 md:p-2 hover:bg-red-50 rounded-lg transition-colors group"
                         >
                           <X className="h-4 w-4 text-gray-400 group-hover:text-red-600" />
                         </button>
                       </div>
 
-                      {/* Price and Quantity */}
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div className="flex items-center justify-between sm:justify-start sm:gap-4">
                           <div className="text-lg md:text-xl font-bold text-red-600">
@@ -264,7 +222,7 @@ const CartPage = () => {
                           </button>
                           <div className="flex items-center bg-gray-100 rounded-xl">
                             <button 
-                              onClick={() => updateQuantity(item.id, -1)}
+                              onClick={() => handleQuantityChange(item.id, -1)}
                               className="p-2 hover:bg-gray-200 rounded-l-xl transition-colors"
                               disabled={item.quantity <= 1}
                             >
@@ -274,7 +232,7 @@ const CartPage = () => {
                               {item.quantity}
                             </span>
                             <button 
-                              onClick={() => updateQuantity(item.id, 1)}
+                              onClick={() => handleQuantityChange(item.id, 1)}
                               className="p-2 hover:bg-gray-200 rounded-r-xl transition-colors"
                             >
                               <Plus className="h-4 w-4" />
@@ -287,7 +245,6 @@ const CartPage = () => {
                 </div>
               ))}
 
-              {/* Promo Code Section */}
               <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-gray-900 flex items-center gap-2">
@@ -314,7 +271,14 @@ const CartPage = () => {
                       </div>
                     </div>
                     <button 
-                      onClick={() => setAppliedPromo(null)}
+                      onClick={() => {
+                        setAppliedPromo(null);
+                        toast.info('Promo code removed', {
+                          description: 'Your discount has been removed.',
+                          duration: 3000,
+                          position: 'top-right',
+                        });
+                      }}
                       className="text-green-600 hover:text-green-700 transition-colors"
                     >
                       <X className="h-4 w-4" />
@@ -341,9 +305,7 @@ const CartPage = () => {
               </div>
             </div>
 
-            {/* Order Summary */}
             <div className="space-y-4">
-              {/* Summary Card */}
               <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 sticky top-24">
                 <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-red-600" />
@@ -402,9 +364,19 @@ const CartPage = () => {
                 )}
                 
                 <div className="space-y-3">
-                  <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                    <Lock className="h-4 w-4" />
-                    Proceed to Checkout
+                  <button 
+                    onClick={redirectToWhatsApp}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  >
+                    <span>Order via WhatsApp</span>
+                  </button>
+                  
+                  <button 
+                    onClick={redirectToEmail}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>Order via Email</span>
                   </button>
                   
                   <button className="w-full border border-gray-300 hover:border-gray-400 text-gray-700 py-2 md:py-3 rounded-xl font-medium transition-colors duration-200">
@@ -418,7 +390,6 @@ const CartPage = () => {
                 </div>
               </div>
 
-              {/* Trust Badges */}
               <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                 <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600" />
@@ -439,7 +410,6 @@ const CartPage = () => {
                 </div>
               </div>
 
-              {/* Recently Viewed */}
               <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                 <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Eye className="h-5 w-5 text-gray-600" />
@@ -460,7 +430,6 @@ const CartPage = () => {
           </div>
         )}
 
-        {/* Mobile Checkout Bar */}
         {!isEmpty && (
           <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 lg:hidden z-20">
             <div className="flex items-center justify-between mb-3">
@@ -481,5 +450,6 @@ const CartPage = () => {
     </div>
   );
 };
+
 
 export default CartPage;

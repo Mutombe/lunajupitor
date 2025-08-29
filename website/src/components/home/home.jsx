@@ -24,18 +24,251 @@ import {
   Twitter,
   Instagram,
   Linkedin,
+  Wrench,
+  Gift, Percent, Tag, Package, Zap, Car, Plus, Minus, Lock, CreditCard, Eye, AlertCircle,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useCart   } from "../cartContext";
 import { useNavigate } from "react-router-dom";
+import { products } from "../data";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const ProductCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const navigate = useNavigate();
+
+  const slides = [
+    {
+      id: 1,
+      title: "Premium Engine Parts",
+      subtitle: "High-Performance Solutions",
+      description: "Genuine and OEM-quality engine components for maximum reliability",
+      image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop&auto=format",
+      cta: "Shop Engines",
+      gradient: "from-blue-900 to-blue-700"
+    },
+    {
+      id: 2,
+      title: "Brake Systems",
+      subtitle: "Safety First",
+      description: "Professional-grade brake parts and components for all vehicle types",
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&auto=format",
+      cta: "View Brakes",
+      gradient: "from-red-900 to-red-700"
+    },
+    {
+      id: 3,
+      title: "Transmission Parts",
+      subtitle: "Smooth Performance",
+      description: "Complete transmission solutions for commercial and heavy-duty vehicles",
+      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&h=600&fit=crop&auto=format",
+      cta: "Explore Parts",
+      gradient: "from-green-900 to-green-700"
+    },
+    {
+      id: 4,
+      title: "Electrical Components",
+      subtitle: "Advanced Technology",
+      description: "Modern electrical systems and components for today's vehicles",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&auto=format",
+      cta: "See Electronics",
+      gradient: "from-purple-900 to-purple-700"
+    }
+  ];
+
+  const features = [
+    { icon: Truck, text: "1000+ Brands" },
+    { icon: Shield, text: "Quality Guaranteed" },
+    { icon: Clock, text: "Fast Shipping" },
+    { icon: Wrench, text: "Expert Support" }
+  ];
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setIsAutoPlaying(false);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setIsAutoPlaying(false);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+    setIsAutoPlaying(false);
+  };
+
+  const currentSlideData = slides[currentSlide];
+
+  return (
+    <div className="relative min-h-screen bg-gray-900 overflow-hidden">
+      {/* Background with Gradient Overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.gradient} transition-all duration-1000`}>
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-30"
+          style={{ backgroundImage: `url(${currentSlideData.image})` }}
+        />
+      </div>
+
+      {/* Navigation Arrows - Hidden on small screens */}
+      <button 
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300 hidden sm:flex items-center justify-center"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      
+      <button 
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300 hidden sm:flex items-center justify-center"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Header Content */}
+        <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-16">
+          <div className="text-center max-w-4xl mx-auto">
+            {/* Slide Indicator Pills - Mobile Friendly */}
+            <div className="flex justify-center mb-6 sm:mb-8">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`mx-1 w-8 h-2 sm:w-12 sm:h-3 rounded-full transition-all duration-300 ${
+                    index === currentSlide 
+                      ? 'bg-white shadow-lg' 
+                      : 'bg-white/30 hover:bg-white/50'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Slide Content */}
+            <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-2">
+                <p className="text-sm sm:text-base text-white/80 font-medium tracking-wider uppercase">
+                  {currentSlideData.subtitle}
+                </p>
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                  {currentSlideData.title}
+                </h1>
+              </div>
+              
+              <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                {currentSlideData.description}
+              </p>
+
+              {/* CTA Button */}
+              <div className="pt-4 sm:pt-6">
+                <button className="bg-red-600 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
+                onClick={() => navigate("/products")}>
+                  {currentSlideData.cta}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section - Search & Features */}
+        <div className="bg-white/95 backdrop-blur-sm">
+          {/* Quick Search Bar */}
+          <div className="px-4 py-6 sm:py-8">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center">
+                Find Your Parts Quickly
+              </h3>
+              
+              {/* Mobile-First Search Layout */}
+              <div className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                  <select className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option>Select Brand</option>
+                    <option>UD Trucks</option>
+                    <option>Hino</option>
+                    <option>Freightliner</option>
+                    <option>Isuzu</option>
+                    <option>Volvo</option>
+                    <option>Mercedes</option>
+                  </select>
+                  
+                  <select className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option>Part Category</option>
+                    <option>Engine Parts</option>
+                    <option>Brake Systems</option>
+                    <option>Transmission</option>
+                    <option>Electrical</option>
+                    <option>Suspension</option>
+                  </select>
+                  
+                  <input 
+                    type="text" 
+                    placeholder="Enter part number..."
+                    className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                
+                <button className="w-full sm:w-auto mx-auto flex items-center justify-center gap-2 bg-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                onClick={() => navigate("/products")}>
+                  <Search size={20} />
+                  Search Parts
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Features Bar */}
+          <div className="border-t border-gray-200 px-4 py-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-center justify-center gap-2 text-gray-700">
+                    <feature.icon size={18} className="text-red-600" />
+                    <span className="text-sm sm:text-base font-medium">{feature.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Swipe Indicators */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 sm:hidden">
+        <div className="bg-black/20 backdrop-blur-sm rounded-full px-3 py-2">
+          <p className="text-white text-xs">
+            {currentSlide + 1} / {slides.length}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const Home = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
     hours: 12,
     minutes: 45,
     seconds: 18,
   });
+
+  const { addToCart } = useCart();
+  
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -64,76 +297,8 @@ const Home = () => {
 
   return (
     <div className="bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url("/1234.png")`,
-          }}
-        ></div>
+      <ProductCarousel />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Find Parts For <span className="text-red-500">Your Vehicle</span>
-          </h1>
-          <p className="text-xl sm:text-2xl mb-8 max-w-3xl mx-auto">
-            Over hundreds of brands and tens of thousands of parts
-          </p>
-
-          {/* Search Form */}
-          <div className="max-w-4xl mx-auto mb-8">
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-2xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Brand
-                  </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
-                    <option>Select Brand</option>
-                    <option>UD Trucks</option>
-                    <option>Hino</option>
-                    <option>Freightliner</option>
-                    <option>Isuzu</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Type
-                  </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
-                    <option>Select Type</option>
-                    <option>Engine Parts</option>
-                    <option>Brake Parts</option>
-                    <option>Transmission</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Year
-                  </label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500">
-                    <option>Select Year</option>
-                    <option>2023</option>
-                    <option>2022</option>
-                    <option>2021</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-2 lg:col-span-1 flex items-end">
-                  <button className="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition-colors transform hover:scale-105"
-                    onClick={() => navigate("/products")}
-                  >
-                    Search Parts
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Cards */}
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -144,7 +309,7 @@ const Home = () => {
                 desc: "On orders over $100",
               },
               {
-                icon: <Headphones size={32} />,
+                icon: <Phone size={32} />,
                 title: "Support 24/7",
                 desc: "Expert advice",
               },
@@ -154,7 +319,7 @@ const Home = () => {
                 desc: "Only secure payments",
               },
               {
-                icon: <Award size={32} />,
+                icon: <Gift size={32} />,
                 title: "Hot Offers",
                 desc: "Discounts up to 90%",
               },
@@ -178,7 +343,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Category Cards */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,36 +351,46 @@ const Home = () => {
                 title: "Interior Parts",
                 subtitle: "Low prices guaranteed",
                 bg: "from-blue-600 to-blue-700",
+                image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&auto=format"
               },
               {
                 title: "Wheels Rim",
                 subtitle: "Power looks of next level",
                 bg: "from-teal-600 to-teal-700",
+                image: "/rim.jpg"
               },
               {
                 title: "Body Parts",
                 subtitle: "For Any Vehicle",
                 bg: "from-gray-600 to-gray-700",
+                image: "/body.webp"
               },
             ].map((category, index) => (
               <div
                 key={index}
-                className={`relative h-48 rounded-xl overflow-hidden bg-gradient-to-br ${category.bg} text-white`}
+                className={`relative h-48 rounded-xl overflow-hidden bg-gradient-to-br ${category.bg} text-white group cursor-pointer`}
               >
-                <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                <div className="absolute inset-0 opacity-30 group-hover:opacity-20 transition-opacity">
+                  <img 
+                    src={category.image} 
+                    alt={category.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="absolute inset-0 p-6 flex flex-col justify-between relative z-10">
                   <div>
                     <p className="text-sm opacity-90">{category.subtitle}</p>
                     <h3 className="text-2xl font-bold mt-1">
                       {category.title}
                     </h3>
                   </div>
-                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors w-fit"
-                    onClick={() => navigate("/products")}>
+                  <button className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors w-fit group-hover:scale-105 transform">
                     Shop Now
                   </button>
                 </div>
-                <div className="absolute top-4 right-4 w-16 h-16 rounded-full flex items-center justify-center">
-                  <Settings className="w-8 h-8" />
+                <div className="absolute top-4 right-4 w-16 h-16 rounded-full flex items-center justify-center bg-opacity-20">
+                  <Wrench className="w-8 h-8" />
                 </div>
               </div>
             ))}
@@ -224,7 +398,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Shop by Category */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
@@ -233,193 +406,247 @@ const Home = () => {
                 Shop by category
               </h2>
             </div>
-            <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors"
-              onClick={() => navigate("/products")}>
+            <button className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors">
               Shop Now
             </button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { name: "Body Parts", icon: "🚗" },
-              { name: "Headlights & Lighting", icon: "💡" },
-              { name: "Brakes & Suspension", icon: "🔧" },
-              { name: "Engine & Drivetrain", icon: "⚙️" },
-              { name: "Tools & Garage", icon: "🔨" },
-              { name: "Interior Parts", icon: "🪑" },
-              { name: "Body Parts", icon: "🚗" },
-              { name: "Brakes & Suspension", icon: "🔧" },
+              { 
+                name: "Body Parts", 
+                icon: "🚗",
+                image: "/body.webp"
+              },
+              { 
+                name: "Headlights & Lighting", 
+                icon: "💡",
+                image: "/head.jpg"
+              },
+              { 
+                name: "Brakes & Suspension", 
+                icon: "🔧",
+                image: "/brake1.webp"
+              },
+              { 
+                name: "Engine & Drivetrain", 
+                icon: "⚙️",
+                image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=200&h=200&fit=crop&auto=format"
+              },
+              { 
+                name: "Tools & Garage", 
+                icon: "🔨",
+                image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&h=200&fit=crop&auto=format"
+              },
+              { 
+                name: "Interior Parts", 
+                icon: "🪑",
+                image: "/interior.jpg"
+              },
+              { 
+                name: "Filters & Fluids", 
+                icon: "🛢️",
+                image: "/fluids.webp"
+              },
+              { 
+                name: "Electrical Parts", 
+                icon: "⚡",
+                image: "/electric.webp"
+              },
             ].map((category, index) => (
               <div
                 key={index}
-                className="bg-white p-4 sm:p-6 rounded-xl text-center hover:shadow-lg transition-shadow cursor-pointer"
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden"
               >
-                <div className="text-3xl sm:text-4xl mb-3">{category.icon}</div>
-                <h3 className="font-medium text-sm sm:text-base text-gray-900">
-                  {category.name}
-                </h3>
+                <div className="relative h-32 sm:h-40 overflow-hidden">
+                  <img 
+                    src={category.image} 
+                    alt={category.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute top-2 right-2 text-2xl bg-white rounded-full p-2 shadow-md">
+                    {category.icon}
+                  </div>
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="font-semibold text-sm sm:text-base text-gray-900 group-hover:text-red-600 transition-colors">
+                    {category.name}
+                  </h3>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Products */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 Special Offers
               </h2>
-              <p className="text-gray-600">Best prices guaranteed</p>
+              <p className="text-gray-600">Best prices guaranteed • Limited time deals</p>
             </div>
-            <div className="flex space-x-2">
-              <button className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center"
-                onClick={() => navigate("/products")}>
-                ←
-              </button>
-              <button className="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center"
-                onClick={() => navigate("/products")}>
-                →
-              </button>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Clock size={16} />
+                <span>Ends in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
+              </div>
+              <div className="flex space-x-2">
+                <button className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                  ←
+                </button>
+                <button className="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-400 transition-colors">
+                  →
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                name: "Turbocharger Assembly",
-                brand: "UD Trucks",
-                price: "$420",
-                oldPrice: "$490",
-                discount: "15%",
-                image: "/turbo.webp",
-              },
-              {
-                name: "Brake Caliper Set",
-                brand: "Hino",
-                price: "$180",
-                oldPrice: "$210",
-                discount: "12%",
-                image: "/brake.webp",
-              },
-              {
-                name: "Fuel Injection Pump",
-                brand: "Freightliner",
-                price: "$350",
-                oldPrice: "$390",
-                discount: "10%",
-                image: "/pump.webp",
-              },
-              {
-                name: "Suspension Kit",
-                brand: "Isuzu",
-                price: "$560",
-                oldPrice: "$620",
-                discount: "10%",
-                image: "/kit.jpg",
-              },
-            ].map((product, index) => (
+            {products.map((product, index) => (
               <div
-                key={index}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                key={product.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
               >
-                <div className="relative h-48 bg-gray-100 flex items-center justify-center">
-                  <div className="text-6xl">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="object-cover h-full w-full"
-                    />
-                  </div>
-                  <div className="absolute top-2 right-2">
-                    <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                <div className="relative h-48 bg-gray-100 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-3 right-3">
+                    <button className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-50 hover:text-red-600 transition-colors">
                       <Heart size={16} className="text-gray-400" />
                     </button>
                   </div>
-                  <div className="absolute top-2 left-2">
-                    <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
-                      -{product.discount}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="text-gray-500 text-sm">{product.brand}</p>
-                  <h3 className="font-semibold mb-2 text-sm">{product.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-lg text-red-600">
-                        {product.price}
-                      </span>
-                      <span className="text-gray-500 line-through ml-2 text-sm">
-                        {product.oldPrice}
-                      </span>
+                  <div className="absolute top-3 left-3">
+                    <div className="bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
+                      -{product.discount}%
                     </div>
                   </div>
-                  <button className="w-full mt-3 bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-700 transition-colors">
-                    Add to Cart
+                  <div className="absolute bottom-3 left-3">
+                    <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                      In Stock
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-gray-500 text-sm font-medium">{product.brand}</p>
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={12} className="fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <h3 className="font-semibold mb-3 text-gray-900 group-hover:text-red-600 transition-colors">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-baseline space-x-2">
+                      <span className="font-bold text-xl text-red-600">
+                        ${product.price}
+                      </span>
+                      <span className="text-gray-400 line-through text-sm">
+                        ${(product.price / (1 - product.discount / 100)).toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="text-green-600 text-sm font-medium">
+                      Save ${((product.price / (1 - product.discount / 100)) - product.price).toFixed(2)}
+                    </div>
+                  </div>
+                  <button 
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                    onClick={() => addToCart(product)}
+                  >
+                    <ShoppingCart size={16} />
+                    <span>Add to Cart</span>
                   </button>
                 </div>
               </div>
             ))}
           </div>
+
+          <div className="text-center mt-8">
+            <button className="bg-gray-100 hover:bg-red-600 hover:text-white text-gray-900 px-8 py-3 rounded-lg font-semibold transition-all duration-300 border border-gray-300">
+              View All Special Offers →
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* Special Offer Countdown */}
-      <section className="py-16 bg-red-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-red-500 to-transparent opacity-30"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="text-center lg:text-left">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <div className="inline-block bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                🔥 LIMITED TIME OFFER
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
                 Special Offer
               </h2>
-              <h3 className="text-2xl sm:text-3xl font-semibold mb-2 text-orange-300">
-                20% OFF
-              </h3>
-              <p className="text-lg sm:text-xl mb-6">
+              <div className="flex items-baseline justify-center lg:justify-start mb-4">
+                <span className="text-5xl sm:text-6xl font-bold text-orange-300">20%</span>
+                <span className="text-2xl ml-2">OFF</span>
+              </div>
+              <p className="text-lg sm:text-xl mb-6 opacity-90">
                 On all brake system parts this month
               </p>
-              <div className="flex justify-center lg:justify-start items-center mb-6 space-x-2 sm:space-x-4">
-                <div className="bg-red-700 px-3 sm:px-4 py-2 rounded-lg text-center">
-                  <span className="text-xl sm:text-2xl font-bold">
+              <div className="flex justify-center lg:justify-start items-center mb-8 space-x-2 sm:space-x-4">
+                <div className="bg-red-800/80 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-xl text-center border border-red-500/30">
+                  <span className="text-xl sm:text-2xl font-bold block">
                     {timeLeft.days.toString().padStart(2, "0")}
                   </span>
-                  <p className="text-xs sm:text-sm">Days</p>
+                  <p className="text-xs sm:text-sm opacity-80">Days</p>
                 </div>
-                <div className="bg-red-700 px-3 sm:px-4 py-2 rounded-lg text-center">
-                  <span className="text-xl sm:text-2xl font-bold">
+                <div className="bg-red-800/80 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-xl text-center border border-red-500/30">
+                  <span className="text-xl sm:text-2xl font-bold block">
                     {timeLeft.hours.toString().padStart(2, "0")}
                   </span>
-                  <p className="text-xs sm:text-sm">Hours</p>
+                  <p className="text-xs sm:text-sm opacity-80">Hours</p>
                 </div>
-                <div className="bg-red-700 px-3 sm:px-4 py-2 rounded-lg text-center">
-                  <span className="text-xl sm:text-2xl font-bold">
+                <div className="bg-red-800/80 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-xl text-center border border-red-500/30">
+                  <span className="text-xl sm:text-2xl font-bold block">
                     {timeLeft.minutes.toString().padStart(2, "0")}
                   </span>
-                  <p className="text-xs sm:text-sm">Mins</p>
+                  <p className="text-xs sm:text-sm opacity-80">Mins</p>
                 </div>
-                <div className="bg-red-700 px-3 sm:px-4 py-2 rounded-lg text-center">
-                  <span className="text-xl sm:text-2xl font-bold">
+                <div className="bg-red-800/80 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-xl text-center border border-red-500/30">
+                  <span className="text-xl sm:text-2xl font-bold block">
                     {timeLeft.seconds.toString().padStart(2, "0")}
                   </span>
-                  <p className="text-xs sm:text-sm">Secs</p>
+                  <p className="text-xs sm:text-sm opacity-80">Secs</p>
                 </div>
               </div>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-              onClick={() => navigate("/products")}>
-                Shop Now
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                  Shop Brake Parts Now
+                </button>
+                <button className="border-2 border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-4 rounded-xl transition-all duration-300">
+                  View All Offers
+                </button>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="w-full max-w-md mx-auto h-64 bg-red-700 bg-opacity-30 rounded-xl flex items-center justify-center">
-                <div className="text-8xl">
+            <div className="text-center relative">
+              <div className="relative w-full max-w-md mx-auto">
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-full blur-3xl opacity-30"></div>
+                <div className="relative bg-red-700/30 backdrop-blur-sm rounded-2xl p-8 border border-red-500/30">
                   <img
-                    src="/brake.webp"
-                    alt="Special Offer"
-                    className="object-cover h-full w-full"
+                    src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop&auto=format"
+                    alt="Brake Parts Special Offer"
+                    className="w-full h-64 object-cover rounded-xl shadow-2xl"
+                    loading="lazy"
                   />
+                  <div className="absolute -top-4 -right-4 bg-orange-500 text-white p-3 rounded-full shadow-lg">
+                    <Percent size={24} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -427,7 +654,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -458,17 +684,17 @@ const Home = () => {
                 desc: "Decades of trucking industry experience",
               },
               {
-                icon: <MapPin size={32} />,
+                icon: <Truck size={32} />,
                 title: "Fast Delivery",
                 desc: "Quick delivery across Zimbabwe",
               },
               {
-                icon: <Award size={32} />,
+                icon: <Gift size={32} />,
                 title: "Competitive Pricing",
                 desc: "Premium parts at great prices",
               },
               {
-                icon: <Headphones size={32} />,
+                icon: <Phone size={32} />,
                 title: "24/7 Support",
                 desc: "Technical team always available",
               },
@@ -490,7 +716,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -559,7 +784,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 bg-red-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">
@@ -570,8 +794,7 @@ const Home = () => {
             won't let you down.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
-              onClick={() => navigate("/contact")}>
+            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
               Request a Quote
             </button>
             <button className="border border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-3 rounded-lg transition-colors flex items-center justify-center">
@@ -580,195 +803,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <div className="text-xl font-bold">
-                  <span className="text-white">LUNAJ</span>
-                </div>
-                <div className="ml-2 grid grid-cols-6 gap-1">
-                  {["M", "O", "T", "O", "R", "S"].map((letter, idx) => (
-                    <div
-                      key={idx}
-                      className="w-5 h-5 bg-red-600 text-white text-xs font-bold flex items-center justify-center rounded"
-                    >
-                      {letter}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p className="text-gray-400 mb-4">
-                Your trusted supplier for premium truck parts in Zimbabwe
-              </p>
-              <div className="flex space-x-4">
-                <Facebook
-                  size={20}
-                  className="text-gray-400 hover:text-white cursor-pointer"
-                />
-                <Twitter
-                  size={20}
-                  className="text-gray-400 hover:text-white cursor-pointer"
-                />
-                <Instagram
-                  size={20}
-                  className="text-gray-400 hover:text-white cursor-pointer"
-                />
-                <Linkedin
-                  size={20}
-                  className="text-gray-400 hover:text-white cursor-pointer"
-                />
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Shop
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Support
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Categories</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Engine Parts
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Brake Systems
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Transmission
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Electrical
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <MapPin
-                    size={16}
-                    className="text-red-500 mr-2 flex-shrink-0"
-                  />
-                  <span className="text-gray-400 text-sm">
-                    Harare, Zimbabwe
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Phone
-                    size={16}
-                    className="text-red-500 mr-2 flex-shrink-0"
-                  />
-                  <span className="text-gray-400 text-sm">
-                    +263 XX XXX XXXX
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Mail size={16} className="text-red-500 mr-2 flex-shrink-0" />
-                  <span className="text-gray-400 text-sm">
-                    info@lunajupitas.co.zw
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <Clock
-                    size={16}
-                    className="text-red-500 mr-2 flex-shrink-0"
-                  />
-                  <span className="text-gray-400 text-sm">
-                    Mon-Fri: 8AM-5PM
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8">
-            <div className="flex flex-col sm:flex-row justify-between items-center">
-              <p className="text-gray-400 text-sm mb-4 sm:mb-0">
-                © 2025 Lunajupitas Motors Pvt Ltd. All rights reserved.
-              </p>
-              <div className="flex space-x-6 text-sm">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Refund Policy
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

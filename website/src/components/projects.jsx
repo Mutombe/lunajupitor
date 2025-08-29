@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -16,10 +12,14 @@ import {
   Expand, Filter, Calendar, Settings,
   ArrowLeft, Check, Facebook, Twitter, Instagram, Linkedin
 } from 'lucide-react';
+import { products } from './data';
+import { useCart } from './cartContext';
+import { Package } from 'lucide-react';
 
 // Products Page Component
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { addToCart } = useCart();
   
   const categories = [
     { id: 'ud', name: 'UD Truck Parts' },
@@ -32,140 +32,89 @@ const Products = () => {
     { id: 'interior', name: 'Interior Parts' },
   ];
 
-  const products = [
-    { 
-      id: 1, 
-      name: 'Engine Pistons Set', 
-      category: 'engine', 
-      brand: 'UD',
-      price: 420,
-      image: '/piston.jpg'
-    },
-    { 
-      id: 2, 
-      name: 'Transmission Kit', 
-      category: 'transmission', 
-      brand: 'Hino',
-      price: 680,
-      image: '/transmission.jpg'
-    },
-    { 
-      id: 3, 
-      name: 'Headlight Assembly', 
-      category: 'body', 
-      brand: 'Freightliner',
-      price: 320,
-      image: '/headlight.webp'
-    },
-    { 
-      id: 4, 
-      name: 'Brake System Kit', 
-      category: 'engine', 
-      brand: 'UD',
-      price: 540,
-      image: 'breaks.jpg'
-    },
-    { 
-      id: 5, 
-      name: 'Dashboard Panel', 
-      category: 'interior', 
-      brand: 'Hino',
-      price: 380,
-      image: '/dashboard.webp'
-    },
-    { 
-      id: 6, 
-      name: 'Fuel Filter', 
-      category: 'engine', 
-      brand: 'Freightliner',
-      price: 85,
-      image: '/filter.webp'
-    },
-  ];
-
   const filteredProducts = selectedCategory === 'all' 
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
   return (
-    <Container maxWidth="lg" className="py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl font-bold mb-6">Our Products</h1>
-        <p className="text-gray-600 mb-8 max-w-3xl">
-          Explore our comprehensive range of high-quality truck parts for UD, Hino, and Freightliner vehicles. 
-          We offer both genuine and aftermarket parts to meet your specific needs.
-        </p>
+    <div className="container mx-auto px-4 py-12">
+      <h1 className="text-4xl font-bold mb-6">Our Products</h1>
+      <p className="text-gray-600 mb-8 max-w-3xl">
+        Explore our comprehensive range of high-quality truck parts for UD, Hino, and Freightliner vehicles. 
+        We offer both genuine and aftermarket parts to meet your specific needs.
+      </p>
 
-        {/* Category Filters */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2">
-            <Chip
-              label="All Products"
-              onClick={() => setSelectedCategory('all')}
-              color={selectedCategory === 'all' ? 'primary' : 'default'}
-              className={selectedCategory === 'all' ? 'bg-blue-600 text-white' : ''}
-            />
-            {categories.map(category => (
-              <Chip
-                key={category.id}
-                label={category.name}
-                onClick={() => setSelectedCategory(category.id)}
-                color={selectedCategory === category.id ? 'primary' : 'default'}
-                className={selectedCategory === category.id ? 'bg-blue-600 text-white' : ''}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        <Grid container spacing={4}>
-          {filteredProducts.map((product, index) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <div className="h-48 bg-gray-200 overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg">{product.name}</h3>
-                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                      {product.brand}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-4">Premium quality part for optimal performance</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-2xl font-bold text-blue-600">${product.price}</span>
-                    <Button variant="contained" color="primary" size="small">
-                      Add to Cart
-                    </Button>
-                  </div>
-                </div>
-              </motion.div>
-            </Grid>
+      <div className="mb-8">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={`px-4 py-2 rounded-full text-sm font-medium ${
+              selectedCategory === 'all' 
+                ? 'bg-red-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            All Products
+          </button>
+          {categories.map(category => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-4 py-2 rounded-full text-sm font-medium ${
+                selectedCategory === category.id 
+                  ? 'bg-red-600 text-white' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {category.name}
+            </button>
           ))}
-        </Grid>
+        </div>
+      </div>
 
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No products found in this category.</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProducts.map((product) => (
+          <div
+            key={product.id}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+          >
+            <div className="h-48 bg-gray-200 overflow-hidden">
+              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                <img 
+                  src={product.image}
+                  alt={product.name}
+                  className="max-w-full max-h-full"
+                />
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-semibold text-lg">{product.name}</h3>
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                  {product.brand}
+                </span>
+              </div>
+              <p className="text-gray-600 text-sm mb-4">Premium quality part for optimal performance</p>
+              <div className="flex justify-between items-center">
+                <span className="text-2xl font-bold text-red-600">${product.price}</span>
+                <button 
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
           </div>
-        )}
-      </motion.div>
-    </Container>
+        ))}
+      </div>
+
+      {filteredProducts.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-500">No products found in this category.</p>
+        </div>
+      )}
+    </div>
   );
 };
 
