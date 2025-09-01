@@ -148,89 +148,35 @@ const ImagePreview = ({
       
       {/* Modal Content */}
       <div className="relative w-full h-full flex flex-col">
+        {/* Close Button - Fixed position for mobile */}
+        <button
+          onClick={onClose}
+          className="fixed top-4 right-4 z-20 p-3 text-white bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full transition-all duration-200 backdrop-blur-sm border border-white border-opacity-20"
+          title="Close (Esc)"
+          style={{ minWidth: '48px', minHeight: '48px' }}
+        >
+          <X size={24} />
+        </button>
+
         {/* Header */}
-        <div className="relative z-10 flex items-center justify-between p-4 bg-black bg-opacity-50">
-          <div className="flex-1">
+        <div className="relative z-10 flex items-start justify-between p-4 pr-20 bg-black bg-opacity-50">
+          <div className="flex-1 min-w-0">
             {title && (
-              <h3 className="text-white text-lg font-semibold truncate">
+              <h3 className="text-white text-base sm:text-lg font-semibold truncate">
                 {title}
               </h3>
             )}
             {description && (
-              <p className="text-gray-300 text-sm truncate">
+              <p className="text-gray-300 text-xs sm:text-sm truncate mt-1">
                 {description}
               </p>
             )}
           </div>
-          
-          {/* Control Buttons */}
-          {showControls && (
-            <div className="flex items-center space-x-2 ml-4">
-              <button
-                onClick={handleZoomOut}
-                className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-                title="Zoom Out (-)"
-              >
-                <ZoomOut size={20} />
-              </button>
-              
-              <button
-                onClick={handleZoomIn}
-                className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-                title="Zoom In (+)"
-              >
-                <ZoomIn size={20} />
-              </button>
-              
-              <button
-                onClick={handleRotate}
-                className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-                title="Rotate (R)"
-              >
-                <RotateCw size={20} />
-              </button>
-              
-              <button
-                onClick={handleReset}
-                className="px-3 py-2 text-white text-sm hover:bg-white hover:bg-opacity-20 rounded transition-colors"
-                title="Reset View"
-              >
-                Reset
-              </button>
-              
-              <div className="w-px h-6 bg-white bg-opacity-30 mx-2" />
-              
-              <button
-                onClick={handleDownload}
-                className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-                title="Download"
-              >
-                <Download size={20} />
-              </button>
-              
-              <button
-                onClick={handleShare}
-                className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
-                title="Share"
-              >
-                <Share2 size={20} />
-              </button>
-            </div>
-          )}
-          
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors ml-4"
-            title="Close (Esc)"
-          >
-            <X size={24} />
-          </button>
         </div>
 
         {/* Image Container */}
         <div 
-          className="flex-1 flex items-center justify-center p-4 overflow-hidden"
+          className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -249,18 +195,102 @@ const ImagePreview = ({
           />
         </div>
 
-        {/* Footer Info */}
-        <div className="relative z-10 p-4 bg-black bg-opacity-50">
-          <div className="flex items-center justify-between text-white text-sm">
-            <div className="flex items-center space-x-4">
-              <span>Scale: {Math.round(scale * 100)}%</span>
-              <span>Rotation: {rotation % 360}°</span>
+        {/* Mobile Controls - Bottom Sheet Style */}
+        {showControls && (
+          <div className="relative z-10 bg-black bg-opacity-50 backdrop-blur-sm">
+            {/* Desktop Controls - Hidden on mobile */}
+            <div className="hidden sm:flex items-center justify-between p-4">
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleZoomOut}
+                  className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                  title="Zoom Out (-)"
+                >
+                  <ZoomOut size={20} />
+                </button>
+                
+                <button
+                  onClick={handleZoomIn}
+                  className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                  title="Zoom In (+)"
+                >
+                  <ZoomIn size={20} />
+                </button>
+                
+                <button
+                  onClick={handleRotate}
+                  className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                  title="Rotate (R)"
+                >
+                  <RotateCw size={20} />
+                </button>
+                
+                <button
+                  onClick={handleReset}
+                  className="px-3 py-2 text-white text-sm hover:bg-white hover:bg-opacity-20 rounded transition-colors"
+                  title="Reset View"
+                >
+                  Reset
+                </button>
+                
+                <div className="w-px h-6 bg-white bg-opacity-30 mx-2" />
+                
+                <button
+                  onClick={handleDownload}
+                  className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                  title="Download"
+                >
+                  <Download size={20} />
+                </button>
+                
+                <button
+                  onClick={handleShare}
+                  className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+                  title="Share"
+                >
+                  <Share2 size={20} />
+                </button>
+              </div>
+
+              <div className="flex items-center space-x-4 text-white text-sm">
+                <span>Scale: {Math.round(scale * 100)}%</span>
+                <span>Rotation: {rotation % 360}°</span>
+              </div>
             </div>
-            <div className="text-gray-300">
-              Use mouse wheel or +/- to zoom • R to rotate • Drag to move when zoomed
+
+            {/* Mobile Controls - Essential buttons only */}
+            <div className="sm:hidden p-4">
+              <div className="flex items-center justify-center space-x-4">
+                <button
+                  onClick={handleZoomOut}
+                  className="flex flex-col items-center justify-center p-4 text-white bg-opacity-10 hover:bg-opacity-20 rounded-lg transition-colors"
+                  style={{ minWidth: '64px', minHeight: '64px' }}
+                >
+                  <ZoomOut size={24} />
+                  <span className="text-xs mt-1">Zoom Out</span>
+                </button>
+                
+                <button
+                  onClick={handleZoomIn}
+                  className="flex flex-col items-center justify-center p-4 text-white bg-opacity-10 hover:bg-opacity-20 rounded-lg transition-colors"
+                  style={{ minWidth: '64px', minHeight: '64px' }}
+                >
+                  <ZoomIn size={24} />
+                  <span className="text-xs mt-1">Zoom In</span>
+                </button>
+                
+                <button
+                  onClick={handleRotate}
+                  className="flex flex-col items-center justify-center p-4 text-white bg-opacity-10 hover:bg-opacity-20 rounded-lg transition-colors"
+                  style={{ minWidth: '64px', minHeight: '64px' }}
+                >
+                  <RotateCw size={24} />
+                  <span className="text-xs mt-1">Rotate</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
