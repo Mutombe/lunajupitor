@@ -43,6 +43,7 @@ import { useCart } from "../cartContext";
 import { useNavigate } from "react-router-dom";
 import { products } from "../data";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import ImagePreview, { useImagePreview } from "./imagePreview";
 
 const ProductCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -295,6 +296,7 @@ const Home = () => {
     minutes: 45,
     seconds: 18,
   });
+  const { preview, openPreview, closePreview } = useImagePreview();
 
   const { addToCart } = useCart();
 
@@ -549,12 +551,23 @@ const Home = () => {
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
               >
                 <div className="relative h-48 bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    loading="lazy"
-                  />
+                  <div
+                    onClick={() =>
+                      openPreview(
+                        product.image,
+                        product.name,
+                        product.name,
+                        `Brand: ${product.brand} | Price: $${product.price}`
+                      )
+                    }
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="absolute top-3 right-3">
                     <button className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-50 hover:text-red-600 transition-colors">
                       <Heart size={16} className="text-gray-400" />
@@ -846,6 +859,16 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Add the ImagePreview component */}
+      <ImagePreview
+        isOpen={preview.isOpen}
+        onClose={closePreview}
+        src={preview.src}
+        alt={preview.alt}
+        title={preview.title}
+        description={preview.description}
+      />
     </div>
   );
 };
