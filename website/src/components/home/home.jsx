@@ -25,13 +25,24 @@ import {
   Instagram,
   Linkedin,
   Wrench,
-  Gift, Percent, Tag, Package, Zap, Car, Plus, Minus, Lock, CreditCard, Eye, AlertCircle,
+  Gift,
+  Percent,
+  Tag,
+  Package,
+  Zap,
+  Car,
+  Plus,
+  Minus,
+  Lock,
+  CreditCard,
+  Eye,
+  AlertCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useCart   } from "../cartContext";
+import { useCart } from "../cartContext";
 import { useNavigate } from "react-router-dom";
 import { products } from "../data";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ProductCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -43,54 +54,62 @@ const ProductCarousel = () => {
       id: 1,
       title: "Premium Engine Parts",
       subtitle: "High-Performance Solutions",
-      description: "Genuine and OEM-quality engine components for maximum reliability",
-      image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop&auto=format",
+      description:
+        "Genuine and OEM-quality engine components for maximum reliability",
+      image:
+        "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop&auto=format",
       cta: "Shop Engines",
-      gradient: "from-blue-900 to-blue-700"
+      gradient: "from-blue-900 to-blue-700",
     },
     {
       id: 2,
       title: "Brake Systems",
       subtitle: "Safety First",
-      description: "Professional-grade brake parts and components for all vehicle types",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&auto=format",
+      description:
+        "Professional-grade brake parts and components for all vehicle types",
+      image:
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&auto=format",
       cta: "View Brakes",
-      gradient: "from-red-900 to-red-700"
+      gradient: "from-red-900 to-red-700",
     },
     {
       id: 3,
       title: "Transmission Parts",
       subtitle: "Smooth Performance",
-      description: "Complete transmission solutions for commercial and heavy-duty vehicles",
-      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&h=600&fit=crop&auto=format",
+      description:
+        "Complete transmission solutions for commercial and heavy-duty vehicles",
+      image:
+        "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&h=600&fit=crop&auto=format",
       cta: "Explore Parts",
-      gradient: "from-green-900 to-green-700"
+      gradient: "from-green-900 to-green-700",
     },
     {
       id: 4,
       title: "Electrical Components",
       subtitle: "Advanced Technology",
-      description: "Modern electrical systems and components for today's vehicles",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&auto=format",
+      description:
+        "Modern electrical systems and components for today's vehicles",
+      image:
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&auto=format",
       cta: "See Electronics",
-      gradient: "from-purple-900 to-purple-700"
-    }
+      gradient: "from-purple-900 to-purple-700",
+    },
   ];
 
   const features = [
     { icon: Truck, text: "1000+ Brands" },
     { icon: Shield, text: "Quality Guaranteed" },
     { icon: Clock, text: "Fast Shipping" },
-    { icon: Wrench, text: "Expert Support" }
+    { icon: Wrench, text: "Expert Support" },
   ];
 
   useEffect(() => {
     if (!isAutoPlaying) return;
-    
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, [isAutoPlaying, slides.length]);
 
@@ -114,23 +133,25 @@ const ProductCarousel = () => {
   return (
     <div className="relative min-h-screen bg-gray-900 overflow-hidden">
       {/* Background with Gradient Overlay */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.gradient} transition-all duration-1000`}>
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${currentSlideData.gradient} transition-all duration-1000`}
+      >
         <div className="absolute inset-0 bg-black/40"></div>
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 opacity-30"
           style={{ backgroundImage: `url(${currentSlideData.image})` }}
         />
       </div>
 
       {/* Navigation Arrows - Hidden on small screens */}
-      <button 
+      <button
         onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300 hidden sm:flex items-center justify-center"
       >
         <ChevronLeft size={24} />
       </button>
-      
-      <button 
+
+      <button
         onClick={nextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300 hidden sm:flex items-center justify-center"
       >
@@ -149,9 +170,9 @@ const ProductCarousel = () => {
                   key={index}
                   onClick={() => goToSlide(index)}
                   className={`mx-1 w-8 h-2 sm:w-12 sm:h-3 rounded-full transition-all duration-300 ${
-                    index === currentSlide 
-                      ? 'bg-white shadow-lg' 
-                      : 'bg-white/30 hover:bg-white/50'
+                    index === currentSlide
+                      ? "bg-white shadow-lg"
+                      : "bg-white/30 hover:bg-white/50"
                   }`}
                 />
               ))}
@@ -167,15 +188,17 @@ const ProductCarousel = () => {
                   {currentSlideData.title}
                 </h1>
               </div>
-              
+
               <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
                 {currentSlideData.description}
               </p>
 
               {/* CTA Button */}
               <div className="pt-4 sm:pt-6">
-                <button className="bg-red-600 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
-                onClick={() => navigate("/products")}>
+                <button
+                  className="bg-red-600 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-xl"
+                  onClick={() => navigate("/products")}
+                >
                   {currentSlideData.cta}
                 </button>
               </div>
@@ -191,7 +214,7 @@ const ProductCarousel = () => {
               <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center">
                 Find Your Parts Quickly
               </h3>
-              
+
               {/* Mobile-First Search Layout */}
               <div className="space-y-3 sm:space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -204,7 +227,7 @@ const ProductCarousel = () => {
                     <option>Volvo</option>
                     <option>Mercedes</option>
                   </select>
-                  
+
                   <select className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option>Part Category</option>
                     <option>Engine Parts</option>
@@ -213,16 +236,18 @@ const ProductCarousel = () => {
                     <option>Electrical</option>
                     <option>Suspension</option>
                   </select>
-                  
-                  <input 
-                    type="text" 
+
+                  <input
+                    type="text"
                     placeholder="Enter part number..."
                     className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
-                <button className="w-full sm:w-auto mx-auto flex items-center justify-center gap-2 bg-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                onClick={() => navigate("/products")}>
+
+                <button
+                  className="w-full sm:w-auto mx-auto flex items-center justify-center gap-2 bg-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={() => navigate("/products")}
+                >
                   <Search size={20} />
                   Search Parts
                 </button>
@@ -235,9 +260,14 @@ const ProductCarousel = () => {
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {features.map((feature, index) => (
-                  <div key={index} className="flex items-center justify-center gap-2 text-gray-700">
+                  <div
+                    key={index}
+                    className="flex items-center justify-center gap-2 text-gray-700"
+                  >
                     <feature.icon size={18} className="text-red-600" />
-                    <span className="text-sm sm:text-base font-medium">{feature.text}</span>
+                    <span className="text-sm sm:text-base font-medium">
+                      {feature.text}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -258,7 +288,6 @@ const ProductCarousel = () => {
   );
 };
 
-
 const Home = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 2,
@@ -268,7 +297,6 @@ const Home = () => {
   });
 
   const { addToCart } = useCart();
-  
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -351,19 +379,20 @@ const Home = () => {
                 title: "Interior Parts",
                 subtitle: "Low prices guaranteed",
                 bg: "from-blue-600 to-blue-700",
-                image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&auto=format"
+                image:
+                  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&auto=format",
               },
               {
                 title: "Wheels Rim",
                 subtitle: "Power looks of next level",
                 bg: "from-teal-600 to-teal-700",
-                image: "/rim.jpg"
+                image: "/rim.jpg",
               },
               {
                 title: "Body Parts",
                 subtitle: "For Any Vehicle",
                 bg: "from-gray-600 to-gray-700",
-                image: "/body.webp"
+                image: "/body.webp",
               },
             ].map((category, index) => (
               <div
@@ -371,8 +400,8 @@ const Home = () => {
                 className={`relative h-48 rounded-xl overflow-hidden bg-gradient-to-br ${category.bg} text-white group cursor-pointer`}
               >
                 <div className="absolute inset-0 opacity-30 group-hover:opacity-20 transition-opacity">
-                  <img 
-                    src={category.image} 
+                  <img
+                    src={category.image}
                     alt={category.title}
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -413,45 +442,47 @@ const Home = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { 
-                name: "Body Parts", 
+              {
+                name: "Body Parts",
                 icon: "🚗",
-                image: "/body.webp"
+                image: "/body.webp",
               },
-              { 
-                name: "Headlights & Lighting", 
+              {
+                name: "Headlights & Lighting",
                 icon: "💡",
-                image: "/head.jpg"
+                image: "/head.jpg",
               },
-              { 
-                name: "Brakes & Suspension", 
+              {
+                name: "Brakes & Suspension",
                 icon: "🔧",
-                image: "/brake1.webp"
+                image: "/brake1.webp",
               },
-              { 
-                name: "Engine & Drivetrain", 
+              {
+                name: "Engine & Drivetrain",
                 icon: "⚙️",
-                image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=200&h=200&fit=crop&auto=format"
+                image:
+                  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=200&h=200&fit=crop&auto=format",
               },
-              { 
-                name: "Tools & Garage", 
+              {
+                name: "Tools & Garage",
                 icon: "🔨",
-                image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&h=200&fit=crop&auto=format"
+                image:
+                  "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&h=200&fit=crop&auto=format",
               },
-              { 
-                name: "Interior Parts", 
+              {
+                name: "Interior Parts",
                 icon: "🪑",
-                image: "/interior.jpg"
+                image: "/interior.jpg",
               },
-              { 
-                name: "Filters & Fluids", 
+              {
+                name: "Filters & Fluids",
                 icon: "🛢️",
-                image: "/fluids.webp"
+                image: "/fluids.webp",
               },
-              { 
-                name: "Electrical Parts", 
+              {
+                name: "Electrical Parts",
                 icon: "⚡",
-                image: "/electric.webp"
+                image: "/electric.webp",
               },
             ].map((category, index) => (
               <div
@@ -459,8 +490,8 @@ const Home = () => {
                 className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden"
               >
                 <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img 
-                    src={category.image} 
+                  <img
+                    src={category.image}
                     alt={category.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     loading="lazy"
@@ -488,12 +519,17 @@ const Home = () => {
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 Special Offers
               </h2>
-              <p className="text-gray-600">Best prices guaranteed • Limited time deals</p>
+              <p className="text-gray-600">
+                Best prices guaranteed • Limited time deals
+              </p>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Clock size={16} />
-                <span>Ends in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
+                <span>
+                  Ends in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}
+                  m
+                </span>
               </div>
               <div className="flex space-x-2">
                 <button className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
@@ -537,7 +573,9 @@ const Home = () => {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-gray-500 text-sm font-medium">{product.brand}</p>
+                    <p className="text-gray-500 text-sm font-medium">
+                      {product.brand}
+                    </p>
                     <div className="flex text-yellow-400">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={12} className="fill-current" />
@@ -549,18 +587,21 @@ const Home = () => {
                   </h3>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-baseline space-x-2">
-                      <span className="font-bold text-xl text-red-600">
-                        ${product.price}
+                      <span className="text-gray-400 text-sm">
+                        ${product.originalPrice}
                       </span>
                       <span className="text-gray-400 line-through text-sm">
-                        ${(product.price / (1 - product.discount / 100)).toFixed(2)}
+                        $
+                        {(product.price / (1 - product.discount / 100)).toFixed(
+                          2
+                        )}
                       </span>
                     </div>
                     <div className="text-green-600 text-sm font-medium">
-                      Save ${((product.price / (1 - product.discount / 100)) - product.price).toFixed(2)}
+                      Save ${product.savings}
                     </div>
                   </div>
-                  <button 
+                  <button
                     className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
                     onClick={() => addToCart(product)}
                   >
@@ -593,7 +634,9 @@ const Home = () => {
                 Special Offer
               </h2>
               <div className="flex items-baseline justify-center lg:justify-start mb-4">
-                <span className="text-5xl sm:text-6xl font-bold text-orange-300">20%</span>
+                <span className="text-5xl sm:text-6xl font-bold text-orange-300">
+                  20%
+                </span>
                 <span className="text-2xl ml-2">OFF</span>
               </div>
               <p className="text-lg sm:text-xl mb-6 opacity-90">
