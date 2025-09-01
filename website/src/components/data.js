@@ -138,7 +138,6 @@ export const products = [
     image: "/Gasket.jpg"
   },
 
-  // Freightliner FL70 Products
   {
     id: 9,
     name: "Freightliner Service Kit",
