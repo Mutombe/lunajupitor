@@ -60,7 +60,7 @@ const CartPage = () => {
 
   const redirectToWhatsApp = () => {
     const message = generateOrderMessage();
-    window.open(`https://wa.me/263777220420?text=${message}`, '_blank');
+    window.open(`https://wa.me/263781287889?text=${message}`, '_blank');
     toast.success('Redirecting to WhatsApp', {
       description: 'You will be redirected to WhatsApp to complete your order.',
       duration: 3000,

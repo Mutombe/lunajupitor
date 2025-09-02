@@ -153,7 +153,7 @@ const Footer = () => {
                     className="text-red-500 mr-2 flex-shrink-0"
                   />
                   <span className="text-gray-400 text-sm">
-                    +263 777 220 420
+                    +263 78 128 7889 
                   </span>
                 </div>
                 <div className="flex items-center">
