@@ -382,7 +382,7 @@ const Home = () => {
                 subtitle: "Low prices guaranteed",
                 bg: "from-blue-600 to-blue-700",
                 image:
-                  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=300&fit=crop&auto=format",
+                  "/interior2.jpg",
               },
               {
                 title: "Wheels Rim",
@@ -394,7 +394,7 @@ const Home = () => {
                 title: "Body Parts",
                 subtitle: "For Any Vehicle",
                 bg: "from-gray-600 to-gray-700",
-                image: "/body.webp",
+                image: "/truckbodyparts.webp",
               },
             ].map((category, index) => (
               <div
@@ -447,12 +447,12 @@ const Home = () => {
               {
                 name: "Body Parts",
                 icon: "🚗",
-                image: "/body.webp",
+                image: "/truckbodyparts.webp",
               },
               {
                 name: "Headlights & Lighting",
                 icon: "💡",
-                image: "/head.jpg",
+                image: "/truckheadlights.png",
               },
               {
                 name: "Brakes & Suspension",
@@ -474,7 +474,7 @@ const Home = () => {
               {
                 name: "Interior Parts",
                 icon: "🪑",
-                image: "/interior.jpg",
+                image: "/truckinterior.avif",
               },
               {
                 name: "Filters & Fluids",
