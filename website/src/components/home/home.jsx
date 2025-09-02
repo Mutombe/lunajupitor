@@ -472,7 +472,7 @@ const Home = () => {
                   "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&h=200&fit=crop&auto=format",
               },
               {
-                name: "Interior Parts",
+                name: "Truck Interior Parts",
                 icon: "🪑",
                 image: "/truckinterior.avif",
               },
