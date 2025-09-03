@@ -208,9 +208,6 @@ const CartPage = () => {
 
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div className="flex items-center justify-between sm:justify-start sm:gap-4">
-                          <div className="text-lg md:text-xl font-bold text-red-600">
-                            ${item.price.toFixed(2)}
-                          </div>
                           <div className="text-xs text-gray-500">
                             {item.warranty} warranty
                           </div>
@@ -315,7 +312,6 @@ const CartPage = () => {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal ({cartItems.length} items)</span>
-                    <span>${subtotal.toFixed(2)}</span>
                   </div>
                   
                   {appliedPromo && (
@@ -326,39 +322,17 @@ const CartPage = () => {
                   )}
                   
                   <div className="flex justify-between text-gray-600">
-                    <span className="flex items-center gap-1">
-                      Shipping
-                      {shipping === 0 && (
-                        <span className="text-xs text-green-600 font-medium">(FREE)</span>
-                      )}
-                    </span>
-                    <span>${shipping.toFixed(2)}</span>
                   </div>
-                  
-                  <div className="flex justify-between text-gray-600">
-                    <span>Tax (8%)</span>
-                    <span>${tax.toFixed(2)}</span>
-                  </div>
-                  
-                  <div className="border-t border-gray-200 pt-3">
-                    <div className="flex justify-between text-lg md:text-xl font-bold text-gray-900">
-                      <span>Total</span>
-                      <span className="text-red-600">${total.toFixed(2)}</span>
-                    </div>
-                  </div>
+                
                 </div>
                 
                 {shipping > 0 && (
                   <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4">
                     <div className="flex items-center gap-2 text-sm text-blue-800">
                       <Truck className="h-4 w-4" />
-                      <span>Add ${(500 - subtotal).toFixed(2)} more for FREE shipping!</span>
+                      <span> FREE shipping!</span>
                     </div>
                     <div className="mt-2 bg-blue-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${Math.min((subtotal / 500) * 100, 100)}%` }}
-                      ></div>
                     </div>
                   </div>
                 )}
@@ -435,9 +409,6 @@ const CartPage = () => {
             <div className="flex items-center justify-between mb-3">
               <div className="text-sm text-gray-600">
                 Total ({cartItems.length} items)
-              </div>
-              <div className="text-lg font-bold text-red-600">
-                ${total.toFixed(2)}
               </div>
             </div>
             <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition-colors duration-200 flex items-center justify-center gap-2">

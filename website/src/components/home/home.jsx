@@ -299,6 +299,8 @@ const Home = () => {
   const { preview, openPreview, closePreview } = useImagePreview();
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -534,10 +536,12 @@ const Home = () => {
                 </span>
               </div>
               <div className="flex space-x-2">
-                <button className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                <button className="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
+                  onClick={()=>navigate('/products')}>
                   ←
                 </button>
-                <button className="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-400 transition-colors">
+                <button className="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-400 transition-colors"
+                  onClick={()=>navigate('/products')}>
                   →
                 </button>
               </div>
@@ -557,7 +561,7 @@ const Home = () => {
                         product.image,
                         product.name,
                         product.name,
-                        `Brand: ${product.brand} | Price: $${product.price}`
+                        `Brand: ${product.brand} | Price: Best Quote`,
                       )
                     }
                   >
@@ -574,9 +578,6 @@ const Home = () => {
                     </button>
                   </div>
                   <div className="absolute top-3 left-3">
-                    <div className="bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
-                      -{product.discount}%
-                    </div>
                   </div>
                   <div className="absolute bottom-3 left-3">
                     <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
@@ -600,18 +601,6 @@ const Home = () => {
                   </h3>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-baseline space-x-2">
-                      <span className="text-gray-400 text-sm">
-                        ${product.originalPrice}
-                      </span>
-                      <span className="text-gray-400 line-through text-sm">
-                        $
-                        {(product.price / (1 - product.discount / 100)).toFixed(
-                          2
-                        )}
-                      </span>
-                    </div>
-                    <div className="text-green-600 text-sm font-medium">
-                      Save ${product.savings}
                     </div>
                   </div>
                   <button
@@ -682,10 +671,12 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={()=>navigate('/products')}>
                   Shop Brake Parts Now
                 </button>
-                <button className="border-2 border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-4 rounded-xl transition-all duration-300">
+                <button className="border-2 border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+                  onClick={()=>navigate('/products')}>
                   View All Offers
                 </button>
               </div>
@@ -850,7 +841,8 @@ const Home = () => {
             won't let you down.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+            <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+              onClick={()=>navigate('/contact')}>
               Request a Quote
             </button>
             <button className="border border-white text-white hover:bg-white hover:text-red-600 font-semibold px-8 py-3 rounded-lg transition-colors flex items-center justify-center">

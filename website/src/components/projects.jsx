@@ -133,7 +133,7 @@ const Products = () => {
                     product.image,
                     product.name,
                     product.name,
-                    `Brand: ${product.brand} | Price: $${product.price}`
+                    `Brand: ${product.brand} | Price: Best Quote`,
                   )
                 }
               >
@@ -155,9 +155,6 @@ const Products = () => {
                 Premium quality part for optimal performance
               </p>
               <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-red-600">
-                  ${product.price}
-                </span>
                 <button
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                   onClick={() => addToCart(product)}
